@@ -4,21 +4,4 @@
 
 # Node files
 node_modules/
-
-# Ruby files
-Gemfile.lock
-
-# Python files
-__pycache__
-venv
-
-# PHP files
-vendor
-logs
-
-# Java files
-.settings
-target/
-.classpath
-.factorypath
-.project
+server/node/.env

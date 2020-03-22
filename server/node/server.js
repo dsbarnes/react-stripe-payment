@@ -1,18 +1,20 @@
 const env = require("dotenv").config({ path: "./.env" });
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
+// const bodyParser = require("body-parser");
 const express = require("express");
-const bodyParser = require("body-parser");
 const app = express();
 const { resolve } = require("path");
 
 
-app.use(bodyParser.json());
+app.use(express.json());
+
+//Keep but ignore until the end
 app.use(
   express.json({
     // We need the raw body to verify webhook signatures.
     // Let's compute it only when hitting the Stripe webhook endpoint.
-    verify: function(req, res, buf) {
+    verify: function (req, res, buf) {
       if (req.originalUrl.startsWith("/webhook")) {
         req.rawBody = buf.toString();
       }
@@ -20,27 +22,45 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  res.send("Hello from API");
-});
-
 app.get("/public-key", (req, res) => {
   res.send({ publicKey: process.env.STRIPE_PUBLISHABLE_KEY });
 });
 
-app.get("/product-details", (req, res) => {
-  let data = getProductDetails();
-  res.send(data);
-});
+app.get('/my-products', (req, res) => {
+  // Apparently for the async await to work the way I wanted it to
+  // The async must be on the outer most function
+  // We await to store the whole list, this way we only make one fetch
+  // as opposed to fetching each loop of the map.
+  // now that we have the whole list, we map existing data to existing data.
+  // took about 17 hours to work out.
+  stripe.skus.list({ limit: 10 }, async (err, skus) => {
+    const products = await stripe.products.list({ limit: 10 })
+    skus.data.map(sku => sku.product = products.data.filter(p => p.id === sku.product)[0])
+    res.send(skus.data)
+  })
+})
+
 
 app.post("/create-payment-intent", async (req, res) => {
+
   const body = req.body;
-  const productDetails = getProductDetails();
+
+  // WE MUST calculate the total charge on the back end
+  // Otherwise you get pwned on deploy.
+  const skus = await stripe.skus.list({ limit: 10 })
+  body.amount.forEach(item => {
+    skus.data.forEach(sku => {
+      if (item === sku.id) { body.amount[body.amount.indexOf(item)] = sku.price }
+    })
+  })
+
+  const amount = body.amount.reduce((a, b) => a + b)
 
   const options = {
     ...body,
-    amount: productDetails.amount,
-    currency: productDetails.currency
+    amount: amount,
+    currency: body.currency,
+    receipt_email: body.receipt_email
   };
 
   try {
@@ -51,11 +71,10 @@ app.post("/create-payment-intent", async (req, res) => {
   }
 });
 
-let getProductDetails = () => {
-  return { currency: "EUR", amount: 9900 };
-};
+
 
 // Webhook handler for asynchronous events.
+// Keep this, b/c eMail reciept can happen here
 app.post("/webhook", async (req, res) => {
   let data;
   let eventType;
