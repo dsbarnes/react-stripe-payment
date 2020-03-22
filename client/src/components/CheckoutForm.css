@@ -1,0 +1,57 @@
+.smalls{
+  text-align: center;
+  margin: 40px 0 40px 0;
+}
+form#payment-form{
+  /* border: 1px solid steelblue; */
+  border-radius: 10px;
+  width: 50%;
+  margin: 0px auto 40px auto;
+  background-color: lightgray;
+  padding-top: 50px;
+}
+div#email{
+  padding:15px;
+}
+div#email input{
+  border-radius: 30px;
+  border: 1px solid steelblue;
+  padding: 10px;
+}
+
+div#payment{
+  margin-left: auto;
+  margin-right: auto;
+  padding: 15px;
+}
+div.StripeElement{
+  border: 1px solid steelblue;
+  border-radius: 30px;
+  padding: 20px;
+  background-color: white;
+
+}
+p#price{
+  margin: 20px 0px 20px 0px;
+  text-align: center;
+}
+button.pay-button{
+  background-color: steelblue;
+  color: white;
+  border-radius: 30px;
+  width: 100%;
+  height: 40px;
+}
+
+.card-header{
+  background-color: steelblue;
+  color: white;
+  text-align: center;
+  font-size: 22px;
+}
+.card-text{
+  padding: 15px;
+}
+.card-footer{
+  background-color: lightgray;
+}

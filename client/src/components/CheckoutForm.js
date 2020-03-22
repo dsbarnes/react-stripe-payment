@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import style from './CheckoutForm.css'
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { CardGroup, Card } from 'react-bootstrap'
 import api from "../api";
@@ -78,53 +79,18 @@ export default function CheckoutForm() {
   const renderForm = () => {
     return (
       <div className='container'>
-        <form onSubmit={handleSubmit}>
-          {/* If you want to select a different currency, you can use something like this: */}
-          {/* <p>Currency: {currency.toLocaleUpperCase()}</p> */}
-
-
-          <div id='email' className='mt-4 mb-4'>
-            <small>Unfortunatly, stripe does not send test emails.</small><br />
-            <small>One has to investigate the code to see that it would otherwise work</small><br />
-            <br />
-            <label className='mr-2'>eMail reciept to: </label>
-            <input
-              className='w-100 mb-4'
-              type="text"
-              id="email"
-              name="email"
-              placeholder="eMail"
-              autoComplete="cardholder"
-            />
-          </div>
-
-          <div id='payment' className=''>
-            <CardElement className='w-50' />
-
-            {error && <div className="message sr-field-error">{error}</div>}
-            <p id='price'>Amount: $ {amount.toLocaleString(navigator.language, { minimumFractionDigits: 2 })} (USD)</p>
-            {!succeeded ? (
-              // removed !clientSecret
-              <button
-                className='mt-2 mb-4 w-50'
-                disabled={processing || !stripe}>
-                {processing ? "Processing…" : "Pay"}
-              </button>
-            ) : (
-                <div className='w-50'>
-                  <h1>Your test payment succeeded</h1>
-                  <p>View PaymentIntent response:</p>
-                  <code>{JSON.stringify(metadata, null, 2)}</code>
-                </div>
-              )}
-          </div>
-        </form>
+        <div className='smalls'>
+          <small>
+            Unfortunatly, stripe does not send test emails.<br />
+            One has to investigate the code to see that it would otherwise work<br />
+          </small>
+          <br />
+        </div>
 
         <CardGroup className='mt-4'>
           {products && products.map(sku => {
             return (
               <Card>
-
                 <Card.Img variant="top" src="*" />
 
                 <Card.Header>
@@ -147,11 +113,89 @@ export default function CheckoutForm() {
                         Add To Cart
                   </p>
                 </Card.Footer>
-
               </Card>
             )
           })}
         </CardGroup>
+
+        <div className='smalls'>
+          <small>
+            Use the credit card number `4242 4242 4242 4242`<br />
+            Use any date in the future <br />
+            Use any 3 digit CCV <br />
+            Use any 5 digit zip code <br />
+            The rest of the for, in this case, is optional <br />
+          </small>
+        </div>
+
+        <form id='payment-form' onSubmit={handleSubmit}>
+          <div id='email' className='mt-4 mb-4'>
+            <br />
+            <input
+              className='w-100 mb-4'
+              type="text"
+              id="email"
+              name="email"
+              placeholder=" Full name on card"
+              autoComplete="cardholder"
+            />
+            <input
+              className='w-100 mb-4'
+              type="text"
+              id="email"
+              name="email"
+              placeholder=" Address"
+              autoComplete="cardholder"
+            />
+            <input
+              className='w-100 mb-4'
+              type="text"
+              id="email"
+              name="email"
+              placeholder=" City"
+              autoComplete="cardholder"
+            />
+            <input
+              className='w-100 mb-4'
+              type="text"
+              id="email"
+              name="email"
+              placeholder=" State"
+              autoComplete="cardholder"
+            />
+            <input
+              className='w-100 mb-4'
+              type="text"
+              id="email"
+              name="email"
+              placeholder=" eMail reciept to"
+              autoComplete="cardholder"
+            />
+          </div>
+
+          <div id='payment' className=''>
+            <CardElement />
+
+            {error && <div className="message sr-field-error">{error}</div>}
+            <p id='price'>Amount: $ {amount.toLocaleString(navigator.language, { minimumFractionDigits: 2 })} (USD)</p>
+            {!succeeded ? (
+              // removed !clientSecret
+              <button
+                className='mt-2 mb-4 pay-button'
+                disabled={processing || !stripe}>
+                {processing ? "Processing…" : "Pay"}
+              </button>
+            ) : (
+                <div className='w-50'>
+                  <h1>Your test payment succeeded</h1>
+                  <p>View PaymentIntent response:</p>
+                  <code>{JSON.stringify(metadata, null, 2)}</code>
+                </div>
+              )}
+          </div>
+        </form>
+
+
       </div>
     );
   };

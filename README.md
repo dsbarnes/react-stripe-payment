@@ -1,14 +1,18 @@
 # React-Stripe-Payment
 React Stripe Payment is a heavily modified version of the Stripe react-elements-card-payment demo repository.  
-I was not satisfied with their API setup, or the fact that their demo only works with one product. I wanted something to calculate prices on the back end, which is oddly abselt from their demo, and I wanted to email a reciept. (Unfortuantly this does not work in test mode, but should be functional according to their API reference / Documentation)
+I was not satisfied with their API setup, or the fact that their demo only works with one product. 
+I wanted something to calculate prices on the back end, which is oddly absent from their demo, 
+and I wanted to email a receipt. 
+(Unfortunately this does not work in test mode, but should be functional 
+according to their API reference / Documentation)
 
 ## Installation
 
 Clone this repo.  
-navigate into the **server** directory and run `yarn install`  
+Navigate into the **server** directory and run `yarn install`  
 navigate into the **client** directory and run `yarn install`  
 navigate to the project directory and `yarn start`  
-(yarn start will run concurently the server and the client, see package.json)  
+(yarn start will run concurrently the server and the client, see package.json)  
 
 The server should start locally on port 4242 and the client should start locally on port 3000.  
 
@@ -54,7 +58,10 @@ If the payment does not succeed, an error message will be rendered instead.
 
 ## Have some fun with it!
 
-Try opening a console and changing the price. Does the cart price always match the actual payment price? Try changing other things too, for example the email, the currency, the payment method, etc. What will suceed? What will fail? What error messages do you get when you change different data?
+Try opening a console and changing the price. 
+Does the cart price always match the actual payment price? 
+Try changing other things too, for example the email, the currency, the payment method, etc. 
+What will succeed? What will fail? What error messages do you get when you change different data?
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
