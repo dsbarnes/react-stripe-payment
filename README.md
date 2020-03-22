@@ -1,4 +1,4 @@
-# Foobar
+# React-Stripe-Payment
 React Stripe Payment is a heavily modified version of the Stripe react-elements-card-payment demo repository.  
 I was not satisfied with their API setup, or the fact that their demo only works with one product. I wanted something to calculate prices on the back end, which is oddly abselt from their demo, and I wanted to email a reciept. (Unfortuantly this does not work in test mode, but should be functional according to their API reference / Documentation)
 
